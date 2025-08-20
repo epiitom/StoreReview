@@ -68,5 +68,40 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+// Update password route 
+router.put('/update-password', async (req, res) => {
+   try {
+       const { email, currentPassword, newPassword } = req.body;
 
+       if (!email || !currentPassword || !newPassword) {
+           return res.status(400).json({ error: 'Email, current password, and new password are required' });
+       }
+
+       // Get user by email
+       const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+
+       if (result.rows.length === 0) {
+           return res.status(404).json({ error: 'User not found' });
+       }
+
+       const user = result.rows[0];
+
+       // Verify current password
+       const validPassword = await bcrypt.compare(currentPassword, user.password);
+       if (!validPassword) {
+           return res.status(401).json({ error: 'Current password is incorrect' });
+       }
+
+       // Hash new password
+       const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+       // Update password in database
+       await pool.query('UPDATE users SET password = $1 WHERE email = $2', [hashedNewPassword, email]);
+
+       res.json({ message: 'Password updated successfully' });
+
+   } catch (error) {
+       res.status(500).json({ error: error.message });
+   }
+});
 module.exports = router;
