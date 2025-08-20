@@ -6,6 +6,9 @@ import Card from "../components/Card"
 import Button from "../components/Button"
 import StarRating from "../components/StarRating"
 import { adminAPI, userAPI, storeAPI, ratingAPI } from "../services/api"
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts"
+
+
 
 const AdminDashboard = () => {
   const location = useLocation()
@@ -27,16 +30,11 @@ const AdminDashboard = () => {
             <Link
               key={item.name}
               to={item.href}
-              className={`
-                                px-3 py-2 text-sm font-medium rounded-md transition-colors
-                                ${
-                                  item.current
-                                    ? "bg-emerald-100 text-emerald-700"
-                                    : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
-                                }
-                            `}
+              className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                item.current ? "bg-emerald-100 text-emerald-700" : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+              }`}
             >
-            
+          
             </Link>
           ))}
         </nav>
@@ -71,6 +69,25 @@ const DashboardOverview = () => {
     }
   }
 
+
+  const chartData = [
+    {
+      name: "Users",
+      value: stats?.total_users || 0,
+      fill: "#10b981",
+    },
+    {
+      name: "Stores",
+      value: stats?.total_stores || 0,
+      fill: "#3b82f6",
+    },
+    {
+      name: "Ratings",
+      value: stats?.total_ratings || 0,
+      fill: "#f59e0b",
+    },
+  ]
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -80,34 +97,73 @@ const DashboardOverview = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <Card>
-        <div className="text-center">
-          <div className="text-3xl font-bold text-emerald-600 mb-2">{stats?.total_users || 0}</div>
-          <p className="text-gray-600">Total Users</p>
-        </div>
-      </Card>
+    <div className="space-y-8">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold text-gray-900">Dashboard Overview</h2>
+       <div className="flex gap-1.5 p-2.5">
+  <Link to="/admin/users">
+    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+      Users
+    </Button>
+  </Link>
 
-      <Card>
-        <div className="text-center">
-          <div className="text-3xl font-bold text-blue-600 mb-2">{stats?.total_stores || 0}</div>
-          <p className="text-gray-600">Total Stores</p>
-        </div>
-      </Card>
+  <Link to="/admin/stores">
+    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+      Stores
+    </Button>
+  </Link>
 
-      <Card>
-        <div className="text-center">
-          <div className="text-3xl font-bold text-yellow-600 mb-2">{stats?.total_ratings || 0}</div>
-          <p className="text-gray-600">Total Ratings</p>
-        </div>
-      </Card>
+  <Link to="/admin/ratings">
+    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+      Ratings
+    </Button>
+  </Link>
+</div>
+      </div>
 
-      <Card>
-        <div className="text-center">
-          <div className="text-3xl font-bold text-purple-600 mb-2">
-            {stats?.average_rating ? Number.parseFloat(stats.average_rating).toFixed(1) : "0.0"}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-emerald-600 mb-2">{stats?.total_users || 0}</div>
+            <p className="text-gray-600">Total Users</p>
           </div>
-          <p className="text-gray-600">Average Rating</p>
+        </Card>
+
+        <Card>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-blue-600 mb-2">{stats?.total_stores || 0}</div>
+            <p className="text-gray-600">Total Stores</p>
+          </div>
+        </Card>
+
+        <Card>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-yellow-600 mb-2">{stats?.total_ratings || 0}</div>
+            <p className="text-gray-600">Total Ratings</p>
+          </div>
+        </Card>
+
+        <Card>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-purple-600 mb-2">
+              {stats?.average_rating ? Number.parseFloat(stats.average_rating).toFixed(1) : "0.0"}
+            </div>
+            <p className="text-gray-600">Average Rating</p>
+          </div>
+        </Card>
+      </div>
+
+      <Card className="p-6">
+        <h3 className="text-lg font-semibold mb-4">Statistics Overview</h3>
+        <div className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData}>
+              <XAxis dataKey="name" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
+              <Tooltip />
+              <Bar dataKey="value" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </Card>
     </div>
