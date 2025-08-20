@@ -32,6 +32,7 @@ export const storeAPI = {
     getStores: (filters) => api.get('/stores/getstore', { params: filters }),
     createStore: (storeData) => api.post('/stores/createstore', storeData),
     getMyStore: () => api.get('/stores/my-store'),
+    getStoreOwner: () => api.get('/stores/store-owners'),
     getMyStoreRatings: () => api.get('/stores/my-store/ratings'),
 };
 export const ratingAPI = {

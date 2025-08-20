@@ -1,164 +1,140 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { authAPI } from '../services/api';
+
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
+import Button from "../components/Button"
+import Card from "../components/Card"
 
 const Login = () => {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-    });
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-    
-    const { login } = useAuth();
-    const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  })
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-        // Clear error when user starts typing
-        if (error) setError('');
-    };
+  const { login } = useAuth()
+  const navigate = useNavigate()
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
+    setError("")
+  }
 
-        try {
-            const response = await authAPI.login(formData);
-            const { user, token } = response.data;
-            
-            login(user, token);
-            
-            // Redirect based on role
-            if (user.role === 'admin') {
-                navigate('/admin');
-            } else if (user.role === 'normal') {
-                navigate('/dashboard');
-            } else if (user.role === 'store_owner') {
-                navigate('/store-dashboard');
-            }
-        } catch (error) {
-            setError(error.response?.data?.error || 'Login failed');
-        } finally {
-            setLoading(false);
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    setError("")
 
-    return (
-        <div className="min-h-screen bg-gray-50 flex  justify-center items-center py-12 sm:px-6 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Sign in to your account
-                </h2>
-                <p className="mt-2 text-center text-sm text-gray-600">
-                    Access your store rating dashboard
-                </p>
-            </div>
+    const result = await login(formData)
 
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                    <form className="space-y-6" onSubmit={handleSubmit}>
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                                Email address
-                            </label>
-                            <div className="mt-1">
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
-                                    required
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                    placeholder="Enter your email"
-                                />
-                            </div>
-                        </div>
+    if (result.success) {
+      // Navigate based on user role
+      const userData = JSON.parse(localStorage.getItem("user"))
+      switch (userData.role) {
+        case "admin":
+          navigate("/admin")
+          break
+        case "store_owner":
+          navigate("/store-dashboard")
+          break
+        case "normal":
+          navigate("/dashboard")
+          break
+        default:
+          navigate("/dashboard")
+      }
+    } else {
+      setError(result.error)
+    }
 
-                        <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                                Password
-                            </label>
-                            <div className="mt-1">
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    autoComplete="current-password"
-                                    required
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                    placeholder="Enter your password"
-                                />
-                            </div>
-                        </div>
+    setLoading(false)
+  }
 
-                        {error && (
-                            <div className="rounded-md bg-red-50 p-4">
-                                <div className="flex">
-                                    <div className="ml-3">
-                                        <h3 className="text-sm font-medium text-red-800">
-                                            {error}
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
+  return (
+   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-white px-6 py-16">
+  <div className="max-w-2xl w-full ">
+    <div className="text-center">
+      <h1 className="text-5xl font-extrabold text-emerald-600 mb-4 tracking-tight">StoreRate</h1>
+      <h2 className="text-3xl font-semibold text-gray-900">Welcome Back</h2>
+      <p className="mt-3 text-lg text-gray-600">Sign in to rate and discover amazing stores</p>
+    </div>
 
-                        <div>
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
-                                    loading 
-                                        ? 'bg-gray-400 cursor-not-allowed' 
-                                        : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-                                }`}
-                            >
-                                {loading ? (
-                                    <>
-                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                        Signing in...
-                                    </>
-                                ) : (
-                                    'Sign in'
-                                )}
-                            </button>
-                        </div>
-                    </form>
+    <Card className="p-10 shadow-xl rounded-2xl border border-gray-100">
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
 
-                    <div className="mt-6">
-                        <div className="text-center">
-                            <span className="text-sm text-gray-600">
-                                Don't have an account?{' '}
-                                <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
-                                    Register here
-                                </Link>
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Quick login hints for testing */}
-                    <div className="mt-4 p-3 bg-gray-50 rounded-md">
-                        <p className="text-xs text-gray-600 font-medium">Test Accounts:</p>
-                        <p className="text-xs text-gray-500">Admin: admin@platform.com / 12345678</p>
-                        <p className="text-xs text-gray-500">Register as normal user above</p>
-                    </div>
-                </div>
-            </div>
+        <div>
+          <label
+            htmlFor="email"
+            className="block text-base font-medium text-gray-700 mb-2"
+          >
+            Email Address
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 text-base"
+            placeholder="you@example.com"
+          />
         </div>
-    );
-};
 
-export default Login;
+        <div>
+          <label
+            htmlFor="password"
+            className="block text-base font-medium text-gray-700 mb-2"
+          >
+            Password
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 text-base"
+            placeholder="Enter your password"
+          />
+        </div>
+
+        <Button
+          type="submit"
+          loading={loading}
+          className="w-full py-4 text-lg rounded-xl shadow-md hover:shadow-lg transition-all"
+          size="lg"
+        >
+          Sign In
+        </Button>
+      </form>
+
+      <div className="mt-8 text-center">
+        <p className="text-gray-600 text-base">
+          Don’t have an account?{" "}
+          <Link
+            to="/register"
+            className="text-emerald-600 hover:text-emerald-700 font-semibold"
+          >
+            Sign up
+          </Link>
+        </p>
+      </div>
+    </Card>
+  </div>
+</div>
+
+  )
+}
+
+export default Login

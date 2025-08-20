@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/register', async(req,res) => {
     try{
-        const {name,email,password,address} = req.body;
+        const {name,email,password,address,role} = req.body;
 
         if(name.length < 5 || name.length > 60){
             return res.status(400).json({error:"Name must be 5-60 characters"});
@@ -16,7 +16,7 @@ router.post('/register', async(req,res) => {
 
         const result = await pool.query(
             'INSERT INTO users (name,email,password,address,role) VALUES ($1,$2,$3,$4,$5) RETURNING id, name, email, role',
-             [name, email, hashedPassword, address, 'normal_user']
+             [name, email, hashedPassword, address, role]
         )
         
                 const token = jwt.sign(

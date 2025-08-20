@@ -8,6 +8,7 @@ const authRoutes = require('./routes/auth');
 const storeRoutes = require('./routes/stores');
 const userRoutes = require('./routes/users');
 const ratingRoutes = require('./routes/rating');
+const adminRoutes = require('./routes/admin');
 const app = express();
 
 app.use(helmet());
@@ -19,6 +20,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/stores', storeRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/ratings', ratingRoutes);
+app.use('/api/admin', adminRoutes);
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
