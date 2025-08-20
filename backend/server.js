@@ -5,8 +5,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 
 const authRoutes = require('./routes/auth');
-
-
+const storeRoutes = require('./routes/stores');
+const userRoutes = require('./routes/users');
 const app = express();
 
 app.use(helmet());
@@ -15,8 +15,8 @@ app.use(morgan('combined'));
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
-
-
+app.use('/api/stores', storeRoutes);
+app.use('/api/users', userRoutes);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
