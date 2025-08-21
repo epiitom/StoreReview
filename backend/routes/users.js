@@ -4,17 +4,52 @@ const pool = require('../config/db');
 const {authenticateToken, requireRole} = require('../middleware/auth')
 const router = express.Router();
 
-//GET /api/users - get all users with filtering and sorting 
-router.get('/', authenticateToken,requireRole(['admin']), async(req,res) => {
-    try{
-        const {role,name,email,address,sort,order = 'asc'} = req.query;
+// GET /api/users/search/:name - Search users by name (MUST be before /:id route)
+router.get('/search/:name', authenticateToken, requireRole(['admin']), async (req, res) => {
+    try {
+        const { name } = req.params;
+        
+        if (!name || name.trim().length === 0) {
+            return res.status(400).json({ error: 'Name parameter is required' });
+        }
+        
+        const result = await pool.query(`
+            SELECT u.id, u.name, u.email, u.address, u.role, u.created_at,
+                   CASE 
+                       WHEN u.role = 'store_owner' THEN (
+                           SELECT COALESCE(ROUND(AVG(r.rating)::numeric, 2), 0)
+                           FROM stores s
+                           LEFT JOIN ratings r ON s.id = r.store_id
+                           WHERE s.owner_id = u.id
+                       )
+                       ELSE NULL
+                   END as rating
+            FROM users u
+            WHERE u.name ILIKE $1
+            ORDER BY u.name ASC
+        `, [`%${name.trim()}%`]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'No users found with that name' });
+        }
+        
+        res.json(result.rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-        let query =`
-          SELECT u.id , u.name, u.email, u.address, u.role, u.created_at,
+//GET /api/users - get all users with filtering and sorting 
+router.get('/', authenticateToken, requireRole(['admin']), async(req, res) => {
+    try{
+        const {role, name, email, address, sort, order = 'asc'} = req.query;
+
+        let query = `
+          SELECT u.id, u.name, u.email, u.address, u.role, u.created_at,
           CASE 
           WHEN u.role = 'store_owner' THEN (
           SELECT COALESCE(ROUND(AVG(r.rating)::numeric,2),0)
-          FROM stores S
+          FROM stores s
           LEFT JOIN ratings r ON s.id = r.store_id
           WHERE s.owner_id = u.id 
           )    
@@ -25,7 +60,8 @@ router.get('/', authenticateToken,requireRole(['admin']), async(req,res) => {
     
         const params = [];
         const conditions = [];
-          // Apply filters
+        
+        // Apply filters
         if (role) {
             conditions.push(`u.role = $${params.length + 1}`);
             params.push(role);
@@ -50,8 +86,8 @@ router.get('/', authenticateToken,requireRole(['admin']), async(req,res) => {
             query += ` WHERE ${conditions.join(' AND ')}`;
         }
             
-        //apply sorting
-         const validSortFields = ['name', 'email', 'role', 'created_at'];
+        // Apply sorting
+        const validSortFields = ['name', 'email', 'role', 'created_at'];
         const sortField = validSortFields.includes(sort) ? sort : 'name';
         const sortOrder = order.toLowerCase() === 'desc' ? 'DESC' : 'ASC';
         
@@ -60,19 +96,19 @@ router.get('/', authenticateToken,requireRole(['admin']), async(req,res) => {
         const result = await pool.query(query, params);
         res.json(result.rows);
 
-    }
-    catch(error){
-           res.status(500).json({ error: error.message });
+    } catch(error) {
+        res.status(500).json({ error: error.message });
     }
 });
+
 // POST /api/users - Create user (Admin only)
 router.post('/', authenticateToken, requireRole(['admin']), async (req, res) => {
     try {
         const { name, email, password, address, role = 'normal_user' } = req.body;
         
-        // Validation
+        // Validation - FIXED ERROR MESSAGE
         if (!name || name.length < 5 || name.length > 60) {
-            return res.status(400).json({ error: 'Name must be 20-60 characters' });
+            return res.status(400).json({ error: 'Name must be 5-60 characters' });
         }
         
         if (!email || !/\S+@\S+\.\S+/.test(email)) {
@@ -114,9 +150,16 @@ router.post('/', authenticateToken, requireRole(['admin']), async (req, res) => 
         }
     }
 });
+
+// GET /api/users/:id - Get user by ID
 router.get('/:id', authenticateToken, requireRole(['admin']), async (req, res) => {
     try {
         const { id } = req.params;
+        
+        // Validate ID is a number
+        if (!/^\d+$/.test(id)) {
+            return res.status(400).json({ error: 'Invalid user ID format' });
+        }
         
         const result = await pool.query(`
             SELECT u.id, u.name, u.email, u.address, u.role, u.created_at,
@@ -138,6 +181,86 @@ router.get('/:id', authenticateToken, requireRole(['admin']), async (req, res) =
         }
         
         res.json(result.rows[0]);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// DELETE /api/users/:id - Delete user (Admin only)
+router.delete('/:id', authenticateToken, requireRole(['admin']), async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        // Validate ID format
+        if (!/^\d+$/.test(id)) {
+            return res.status(400).json({ error: 'Invalid user ID format' });
+        }
+        
+        // Check if user exists and get user details before deletion
+        const userCheck = await pool.query(
+            'SELECT id, name, email, role FROM users WHERE id = $1', 
+            [id]
+        );
+        
+        if (userCheck.rows.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        
+        const userToDelete = userCheck.rows[0];
+        
+        // Prevent deletion of the last admin
+        if (userToDelete.role === 'admin') {
+            const adminCount = await pool.query(
+                'SELECT COUNT(*) as count FROM users WHERE role = $1', 
+                ['admin']
+            );
+            
+            if (parseInt(adminCount.rows[0].count) <= 1) {
+                return res.status(400).json({ 
+                    error: 'Cannot delete the last admin user' 
+                });
+            }
+        }
+        
+        // Begin transaction for safe deletion
+        await pool.query('BEGIN');
+        
+        try {
+            // If user is a store owner, handle store-related cleanup
+            if (userToDelete.role === 'store_owner') {
+                // Delete ratings for stores owned by this user
+                await pool.query(`
+                    DELETE FROM ratings 
+                    WHERE store_id IN (
+                        SELECT id FROM stores WHERE owner_id = $1
+                    )
+                `, [id]);
+                
+                // Delete stores owned by this user
+                await pool.query('DELETE FROM stores WHERE owner_id = $1', [id]);
+            }
+            
+            // Delete any ratings given by this user
+            await pool.query('DELETE FROM ratings WHERE user_id = $1', [id]);
+            
+            // Finally, delete the user
+            const deleteResult = await pool.query(
+                'DELETE FROM users WHERE id = $1 RETURNING id, name, email, role', 
+                [id]
+            );
+            
+            await pool.query('COMMIT');
+            
+            res.json({ 
+                message: 'User deleted successfully',
+                deletedUser: deleteResult.rows[0]
+            });
+            
+        } catch (transactionError) {
+            await pool.query('ROLLBACK');
+            throw transactionError;
+        }
+        
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

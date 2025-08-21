@@ -154,6 +154,30 @@ router.get('/my-store/ratings', authenticateToken, requireRole(['store_owner']),
         res.status(500).json({ error: error.message });
     }
 });
+router.delete('/:id', authenticateToken, requireRole(['admin']), async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        // Check if store exists
+        const storeCheck = await pool.query('SELECT id, name FROM stores WHERE id = $1', [id]);
+        if (storeCheck.rows.length === 0) {
+            return res.status(404).json({ error: 'Store not found' });
+        }
+        
+        // Delete related ratings first (if any foreign key constraints)
+        await pool.query('DELETE FROM ratings WHERE store_id = $1', [id]);
+        
+        // Delete the store
+        const result = await pool.query('DELETE FROM stores WHERE id = $1 RETURNING *', [id]);
+        
+        res.json({ 
+            message: 'Store deleted successfully', 
+            deletedStore: result.rows[0] 
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 module.exports = router;
 

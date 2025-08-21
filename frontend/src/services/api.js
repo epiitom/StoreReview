@@ -25,15 +25,19 @@ export const authAPI ={
 export const userAPI = {
     getUsers: (filter) => api.get('/users', {params: filter}),
     createUser: (userData) => api.post('/users', userData),
-    getUserById: (id) => api.get(`/users/${id}`), // Fixed: /users not /user
+    getUserById: (id) => api.get(`/users/${id}`), 
+     searchByName: (name) => api.get(`/users/search/${name}`),
+     deleteUser: (id) => api.delete(`/users/${id}`)
 };
 // Store API
+
 export const storeAPI = {
     getStores: (filters) => api.get('/stores/getstore', { params: filters }),
     createStore: (storeData) => api.post('/stores/createstore', storeData),
     getMyStore: () => api.get('/stores/my-store'),
     getStoreOwner: () => api.get('/stores/store-owners'),
     getMyStoreRatings: () => api.get('/stores/my-store/ratings'),
+    deleteStore: (id) => api.delete(`/stores/${id}`),
 };
 export const ratingAPI = {
     submitRating: (ratingData) => api.post('/ratings', ratingData),

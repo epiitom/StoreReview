@@ -24,37 +24,37 @@ const AdminDashboard = () => {
     <Layout title="Admin Dashboard">
       {/* Navigation */}
       <div className="mb-8">
-        <nav className="flex space-x-8">
+        <nav className="flex space-x-8 cursor-pointer">
           {navigation.map((item) => (
             <Link
               key={item.name}
               to={item.href}
-              className={`px-3 py-2 text-sm font-medium rounded-md transition-colors `}
+              className={`px-3 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer`}
             >
           
             </Link>
           ))}
         </nav>
-               <div className="flex gap-1.5 p-2.5">
+               <div className="flex gap-1.5 p-2.5 ">
       <Link to="/admin">
-    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+    <Button className="bg-emerald-600 cursor-pointer hover:bg-emerald-700 text-white">
       Overview
     </Button>
   </Link>           
   <Link to="/admin/users">
-    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+    <Button className="bg-emerald-600 cursor-pointer hover:bg-emerald-700 text-white">
       Users
     </Button>
   </Link>
 
   <Link to="/admin/stores">
-    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+    <Button className="bg-emerald-600 cursor-pointer hover:bg-emerald-700 text-white">
       Stores
     </Button>
   </Link>
 
   <Link to="/admin/ratings">
-    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+    <Button className="bg-emerald-600 cursor-pointer hover:bg-emerald-700 text-white">
       Ratings
     </Button>
   </Link>

@@ -22,13 +22,13 @@ export default function LandingPage() {
               <Link to="/login">
                 <Button
                   variant="outline"
-                  className="px-4 py-2 text-sm border-emerald-600 text-emerald-600 hover:bg-emerald-50 bg-transparent"
+                  className="px-4 py-2 cursor-pointer text-sm border-emerald-600 text-emerald-600 hover:bg-emerald-50 bg-transparent"
                 >
                   Sign In
                 </Button>
               </Link>
               <Link to="/register">
-                <Button className="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-700">Get Started</Button>
+                <Button className="px-4 py-2 cursor-pointer text-sm bg-emerald-600 hover:bg-emerald-700">Get Started</Button>
               </Link>
             </div>
           </div>

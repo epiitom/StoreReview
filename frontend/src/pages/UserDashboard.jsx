@@ -118,7 +118,7 @@ const UserDashboard = () => {
                   <StarRating rating={store.user_submitted_rating} readonly size="sm" />
                 </div>
               ) : (
-                <span className="text-sm text-gray-500">Not rated yet</span>
+                <span className="text-sm text-gray-500"></span>
               )}
 
               <Button size="sm" variant="outline" onClick={() => handleRateStore(store)}>
