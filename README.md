@@ -1,60 +1,52 @@
 Store Rating Platform
+A full-stack web app for rating stores with role-based access control.
+Features
+🔑 System Admin
 
-A full-stack web app where users can rate stores (1–5 stars). Features role-based access with System Admin, Normal User, and Store Owner.
-
-Roles & Functionalities
-🔑 System Administrator
-
-Add new stores, normal users, and admins
-
-Dashboard: total users, stores, ratings
-
-View & filter stores and users (Name, Email, Address, Role)
-
-View user details (incl. ratings for store owners)
-
-Logout
+Add stores, users, and admins
+Dashboard with analytics
+Filter and manage all data
+User detail views
 
 👤 Normal User
 
-Sign up / log in
-
-Update password
-
-View & search stores (by Name/Address)
-
-Submit or update rating (1–5) for stores
-
-See own rating + overall rating of stores
-
-Logout
+Sign up / login
+Search stores
+Rate stores (1-5 stars)
+View ratings
 
 🏪 Store Owner
 
-Log in
-
-Update password
-
-Dashboard: view users who rated their store
-
-See store’s average rating
-
-Logout
+Login / password update
+View store ratings
+Customer dashboard
 
 Tech Stack
 
-Frontend: React + Tailwind
-
-Backend: Express / Node.js
-
+Frontend: React + Tailwind CSS
+Backend: Node.js + Express
 Database: PostgreSQL
-
 Auth: JWT
 
-Setup
+Quick Start
+bash# Clone repository
 git clone https://github.com/yourusername/StoreReview.git
+
+# Backend setup
 cd backend
 npm install
-cp .env.example .env   # Add DB + JWT values
-cd frontend  
+cp .env.example .env   # Configure DB + JWT
+
+# Frontend setup  
+cd ../frontend
+npm install
 npm run dev
+Environment Variables
+Create .env in backend folder:
+DATABASE_URL=your_postgresql_url
+JWT_SECRET=your_jwt_secret
+Usage
+
+Start backend server
+Launch frontend dev server
+Access app at http://localhost:3000
