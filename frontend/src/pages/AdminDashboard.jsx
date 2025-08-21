@@ -38,6 +38,25 @@ const AdminDashboard = () => {
             </Link>
           ))}
         </nav>
+               <div className="flex gap-1.5 p-2.5">
+  <Link to="/admin/users">
+    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+      Users
+    </Button>
+  </Link>
+
+  <Link to="/admin/stores">
+    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+      Stores
+    </Button>
+  </Link>
+
+  <Link to="/admin/ratings">
+    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+      Ratings
+    </Button>
+  </Link>
+</div>
       </div>
 
       <Routes>
@@ -100,25 +119,7 @@ const DashboardOverview = () => {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-gray-900">Dashboard Overview</h2>
-       <div className="flex gap-1.5 p-2.5">
-  <Link to="/admin/users">
-    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
-      Users
-    </Button>
-  </Link>
 
-  <Link to="/admin/stores">
-    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
-      Stores
-    </Button>
-  </Link>
-
-  <Link to="/admin/ratings">
-    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
-      Ratings
-    </Button>
-  </Link>
-</div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

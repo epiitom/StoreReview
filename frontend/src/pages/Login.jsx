@@ -232,32 +232,46 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-white p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-blue-50 to-white p-6">
       <div className="w-full max-w-md">
+        {/* Header Section */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-emerald-600 mb-2">StoreRate</h1>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Welcome Back</h2>
-          <p className="text-gray-600">Sign in to rate and discover amazing stores</p>
+          <div className="mb-4">
+            <h1 className="text-4xl font-bold text-emerald-600 mb-2">StoreRate</h1>
+            <div className="w-16 h-1 bg-emerald-500 mx-auto rounded-full"></div>
+          </div>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-3">Welcome Back</h2>
+          <p className="text-gray-600 text-lg">Sign in to rate and discover amazing stores</p>
         </div>
 
-        <div className="bg-white p-8 shadow-xl rounded-2xl border border-gray-100">
-          <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Form Container */}
+        <div className="bg-white/80 backdrop-blur-sm p-8 shadow-2xl rounded-2xl border border-white/20">
+          <div className="space-y-6">
+            {/* Error Message */}
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-10 rounded-lg text-sm">
-                {error}
+              <div className="bg-red-50 border-l-4 border-red-400 text-red-700 px-4 py-3 rounded-r-lg">
+                <div className="flex items-center">
+                  <span className="text-red-400 mr-2">⚠</span>
+                  {error}
+                </div>
               </div>
             )}
 
+            {/* Success Message */}
             {success && (
-              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
-                {success}
+              <div className="bg-green-50 border-l-4 border-green-400 text-green-700 px-4 py-3 rounded-r-lg">
+                <div className="flex items-center">
+                  <span className="text-green-400 mr-2">✓</span>
+                  {success}
+                </div>
               </div>
             )}
 
-            <div>
+            {/* Email Field */}
+            <div className="space-y-2">
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium text-gray-700"
               >
                 Email Address
               </label>
@@ -268,13 +282,14 @@ const Login = () => {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 transition-all duration-200 bg-white/50"
                 placeholder="you@example.com"
               />
             </div>
 
-            <div>
-              <div className="flex justify-between items-center mb-2">
+            {/* Password Field */}
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
                 <label
                   htmlFor="password"
                   className="block text-sm font-medium text-gray-700"
@@ -284,9 +299,9 @@ const Login = () => {
                 <button
                   type="button"
                   onClick={() => setShowUpdatePassword(true)}
-                  className="text-sm text-emerald-600 hover:text-emerald-700 font-medium cursor-pointer"
+                  className="text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
                 >
-                  Update Password?
+                  Update Password
                 </button>
               </div>
               <input
@@ -296,31 +311,41 @@ const Login = () => {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 transition-all duration-200 bg-white/50"
                 placeholder="Enter your password"
               />
             </div>
 
+            {/* Submit Button */}
             <Button
               type="submit"
               loading={loading}
-              className="w-full py-3 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all"
+              onClick={handleSubmit}
+              className="w-full py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 mt-8"
             >
               Sign In
             </Button>
-          </form>
+          </div>
 
-          <div className="mt-6 text-center">
+          {/* Sign Up Link */}
+          <div className="mt-8 text-center border-t border-gray-200 pt-6">
             <p className="text-gray-600">
               Don't have an account?{" "}
               <Link
                 to="/register"
-                className="text-emerald-600 hover:text-emerald-700 font-semibold"
+                className="text-emerald-600 hover:text-emerald-700 font-semibold transition-colors"
               >
-                Sign up
+                Sign up here
               </Link>
             </p>
           </div>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-8">
+          <p className="text-sm text-gray-500">
+            By signing in, you agree to our Terms of Service and Privacy Policy
+          </p>
         </div>
       </div>
 
