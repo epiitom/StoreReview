@@ -163,7 +163,7 @@ const Register = () => {
               />
             </div>
 
-            <Button type="submit" loading={loading} className="w-full" size="lg">
+            <Button type="submit" loading={loading} className="w-full cursor-pointer" size="lg">
               Create Account
             </Button>
           </form>

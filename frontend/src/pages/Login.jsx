@@ -39,7 +39,7 @@ const UpdatePasswordModal = ({ isOpen, onClose, onUpdate }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/update-password', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/update-password`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -321,7 +321,7 @@ const Login = () => {
               type="submit"
               loading={loading}
               onClick={handleSubmit}
-              className="w-full py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 mt-8"
+              className="w-full py-4 text-lg rounded-xl shadow-lg hover:shadow-xl cursor-pointer transition-all duration-300 mt-8"
             >
               Sign In
             </Button>
