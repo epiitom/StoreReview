@@ -6,6 +6,7 @@ import AdminDashboard from "./pages/AdminDashboard"
 import UserDashboard from "./pages/UserDashboard"
 import StoreOwnerDashboard from "./pages/StoreOwnerDashboard"
 import ProtectedRoute from "./components/ProtectedRoute"
+import Landing from "./pages/Landing"
 import "./App.css"
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
+            <Route path ="/Landing" element={<Landing/>}/>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
@@ -45,7 +47,7 @@ function App() {
             />
 
             <Route path="/unauthorized" element={<div>Unauthorized Access</div>} />
-            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/" element={<Navigate to="/Landing" />} />
           </Routes>
         </div>
       </Router>
