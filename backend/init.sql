@@ -37,12 +37,3 @@ CREATE INDEX idx_stores_owner ON stores(owner_id);
 CREATE INDEX idx_ratings_store ON ratings(store_id);
 CREATE INDEX idx_ratings_user ON ratings(user_id);
 
--- Insert initial admin
-INSERT INTO users (name, email, password, role, address) 
-VALUES (
-  'System Administrator',
-  'admin@platform.com',
-  '12345678',
-  'admin',
-  'Platform Headquarters'
-);

@@ -22,10 +22,10 @@ export const authAPI ={
 }
 // user API (Admin only)
 
-export const userAPI ={
-    getUsers:(filter) => api.get('/users',{params:filter }),
-    createUser:(userData => api.post('/user',userData)),
-    getUserById:(id) => api.get(`/user/${id}`),
+export const userAPI = {
+    getUsers: (filter) => api.get('/users', {params: filter}),
+    createUser: (userData) => api.post('/users', userData),
+    getUserById: (id) => api.get(`/users/${id}`), // Fixed: /users not /user
 };
 // Store API
 export const storeAPI = {

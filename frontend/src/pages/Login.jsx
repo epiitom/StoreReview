@@ -39,7 +39,7 @@ const UpdatePasswordModal = ({ isOpen, onClose, onUpdate }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/update-password', {
+      const response = await fetch('http://localhost:3000/api/auth/update-password', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
