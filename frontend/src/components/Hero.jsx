@@ -26,7 +26,7 @@ const Hero = () => {
               <Link to="/register" className="group">
                 <Button
                   size="md"
-                  className="px-7 py-3.5 cursor-pointer text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 bg-emerald-600 hover:bg-emerald-700 transform hover:-translate-y-1"
+                  className="px-7 py-3.5 cursor-pointer text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 bg-emerald-600 hover:bg-emerald-700 "
                 >
                   Start Rating Stores
                   <span className="ml-2 group-hover:translate-x-1 transition-transform duration-200">→</span>

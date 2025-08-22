@@ -46,9 +46,9 @@ const Features = () => {
                             </div>
                         </div>
                         <div className="flex items-center justify-center">
-                            {/* Placeholder for image - you can add your image here later */}
-                            <div className="w-full max-w-none rounded-xl bg-gradient-to-br from-emerald-50 to-blue-50 shadow-xl ring-1 ring-gray-400/10 sm:w-96 h-96 flex items-center justify-center">
-                                <span className="text-gray-400 text-lg">Your Image Here</span>
+                         
+                            <div className="w-full  rounded-xl bg-gradient-to-br from-emerald-50 to-blue-50 shadow-xl ring-1 ring-gray-400/10 sm:w-96 h-96 flex items-center justify-center">
+                                <img src ="/image.png" alt="image"      className="w-[75%] h-[100%] object-cover" ></img> 
                             </div>
                         </div>
                     </div>
