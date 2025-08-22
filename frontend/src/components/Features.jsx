@@ -75,7 +75,7 @@ const Features = () => {
                                 ))}
                             </div>
                             <p className="text-gray-700 mb-4 leading-relaxed">
-                                "StoreRate helped me find the best local coffee shops. The reviews are honest and detailed, exactly what I needed!"
+                                "StoreReview helped me find the best local coffee shops. The reviews are honest and detailed, exactly what I needed!"
                             </p>
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
@@ -97,7 +97,7 @@ const Features = () => {
                                 ))}
                             </div>
                             <p className="text-gray-700 mb-4 leading-relaxed">
-                                "As a business owner, StoreRate gives me valuable feedback from customers. It's helped improve my service quality."
+                                "As a business owner, StoreReview gives me valuable feedback from customers. It's helped improve my service quality."
                             </p>
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">

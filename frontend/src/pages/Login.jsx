@@ -237,7 +237,7 @@ const Login = () => {
         {/* Header Section */}
         <div className="text-center mb-8">
           <div className="mb-4">
-            <h1 className="text-4xl font-bold text-emerald-600 mb-2">StoreRate</h1>
+            <h1 className="text-4xl font-bold text-emerald-600 mb-2">StoreReview</h1>
             <div className="w-16 h-1 bg-emerald-500 mx-auto rounded-full"></div>
           </div>
           <h2 className="text-2xl font-semibold text-gray-800 mb-3">Welcome Back</h2>

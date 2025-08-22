@@ -6,14 +6,14 @@ import Features from "../components/Features"
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-white">
-      <nav className="relative z-10 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
-        <div className="max-w-6xl mx-auto px-6 py-4">
+      <nav className="relative z-7 bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200">
+        <div className="max-w-6xl mx-auto px-5 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-8 bg-emerald-600 rounded-xl flex items-center justify-center">
                 <span className="text-lg text-white font-bold">S</span>
               </div>
-              <span className="text-xl font-bold text-emerald-600">StoreRate</span>
+              <span className="text-xl font-bold text-emerald-600">StoreReview</span>
             </div>
 
          
@@ -83,7 +83,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="text-center">
             <p className="text-sm text-gray-500 mb-2">
-              By joining StoreRate, you agree to our
+              By joining StoreReview, you agree to our
               <a href="/terms" className="text-emerald-600 hover:text-emerald-700 ml-1">
                 Terms of Service
               </a>{" "}
@@ -92,7 +92,10 @@ export default function LandingPage() {
                 Privacy Policy
               </a>
             </p>
-            <p className="text-xs text-gray-400">© 2025 StoreRate. All rights reserved.</p>
+            <div>
+            <p className="text-xs text-gray-400">© 2025 StoreReview. All rights reserved.</p>
+            <p className ="text-neutral-600">Created by Prathmesh Kale</p>
+            </div>
           </div>
         </div>
       </div>
