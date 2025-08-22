@@ -209,5 +209,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Live Demo**: [https://storerate-demo.netlify.app](https://your-demo-link.com)  
+**Live Demo**: [https://store-review-7bsv.vercel.app/(https://store-review-7bsv.vercel.app/Landing)]  
 **API Documentation**: [https://api.storerate.com/docs](https://your-api-docs.com)
