@@ -1,6 +1,7 @@
 # 🏪 Store Rating Platform
 
 > Full-stack web app for rating stores with role-based access control
+<img width="1657" height="687" alt="image" src="https://github.com/user-attachments/assets/6cfba8a3-b59b-4b69-b7d5-39998b9146cf" />
 
 ---
 
