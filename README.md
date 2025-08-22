@@ -201,13 +201,5 @@ cd backend && npm run start:prod
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
-
-- React community for excellent documentation
-- Express.js team for the robust web framework
-- PostgreSQL for reliable data storage
 
 ---
-
-**Live Demo**: [https://store-review-7bsv.vercel.app/(https://store-review-7bsv.vercel.app/Landing)]  
-**API Documentation**: [https://api.storerate.com/docs](https://your-api-docs.com)
