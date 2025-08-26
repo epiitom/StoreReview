@@ -24,7 +24,11 @@ router.get('/getstore',authenticateToken , async (req,res) =>{
         }
         if(name){
             conditions.push(`s.name ILIKE $${params.length + 1}`);
-            params.push('%${address}%');
+            params.push(`%${name}%`); // ✅ FIXED: Use 'name' instead of 'address'
+        }
+        if(address){
+            conditions.push(`s.address ILIKE $${params.length + 1}`);
+            params.push(`%${address}%`);
         }
          
         if (conditions.length > 0) {
@@ -57,6 +61,7 @@ router.get('/getstore',authenticateToken , async (req,res) =>{
          res.status(500).json({error:error.message});
     }
 });
+
   //admin only create store
 // Admin only create store - OWNER REQUIRED
 router.post("/createstore", authenticateToken, requireRole(['admin']), async(req, res) => {
@@ -102,6 +107,7 @@ router.post("/createstore", authenticateToken, requireRole(['admin']), async(req
         }
     }
 });
+
    //Store owners store details
 router.get('/my-store', authenticateToken, requireRole(['store_owner']), async (req, res) => {
     try {
@@ -137,6 +143,7 @@ router.get('/store-owners', authenticateToken, requireRole(['admin']), async (re
         res.status(500).json({ error: error.message });
     }
 });
+
 // GET /api/stores/my-store/ratings - Store owner's ratings list
 router.get('/my-store/ratings', authenticateToken, requireRole(['store_owner']), async (req, res) => {
     try {
@@ -154,6 +161,7 @@ router.get('/my-store/ratings', authenticateToken, requireRole(['store_owner']),
         res.status(500).json({ error: error.message });
     }
 });
+
 router.delete('/:id', authenticateToken, requireRole(['admin']), async (req, res) => {
     try {
         const { id } = req.params;
@@ -180,4 +188,3 @@ router.delete('/:id', authenticateToken, requireRole(['admin']), async (req, res
 });
 
 module.exports = router;
-
